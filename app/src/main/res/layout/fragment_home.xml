@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="March 18 2022"
@@ -32,10 +32,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:itemCount="1"
         tools:listitem="@layout/item_discover"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textDate" />
 
     <TextView
         android:id="@+id/textView4"
@@ -81,6 +80,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tabLayout"
         tools:listitem="@layout/item_news"
-        tools:itemCount="2"/>
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
