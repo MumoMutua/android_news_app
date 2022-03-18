@@ -5,6 +5,9 @@
       <map>
         <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/activity_home.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/item_discover.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/item_news.xml" value="0.75" />
       </map>
     </option>
   </component>

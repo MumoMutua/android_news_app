@@ -19,13 +19,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageView image = findViewById(R.id.img_mine);
-        Glide.with(this).load(R.raw.animation2).into(image);
+        Glide.with(this).load(R.raw.animation3).into(image);
 
         delayHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                startActivity(new Intent(MainActivity.this, HomeActivity.class));
+               finish();
             }
-        }, 6000);
+
+        }, 3000);
     }
 }
