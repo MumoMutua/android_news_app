@@ -22,4 +22,13 @@
         android:name="com.mumo.newsapp.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/videoFormFragment"
+        android:name="com.mumo.newsapp.VideoFormFragment"
+        android:label="Add a Video"
+        tools:layout="@layout/fragment_video_form" />
+
+
+
+
 </navigation>

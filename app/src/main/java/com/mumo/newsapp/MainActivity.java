@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.ImageView;
-
 import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,13 +20,9 @@ public class MainActivity extends AppCompatActivity {
         ImageView image = findViewById(R.id.img_mine);
         Glide.with(this).load(R.raw.animation3).into(image);
 
-        delayHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               startActivity(new Intent(MainActivity.this, HomeActivity.class));
-               finish();
-            }
-
+        delayHandler.postDelayed(() -> {
+           startActivity(new Intent(MainActivity.this, HomeActivity.class));
+           finish();
         }, 3000);
     }
 }
