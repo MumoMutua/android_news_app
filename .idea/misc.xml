@@ -3,12 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/activity_home.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/activity_home.xml" value="0.2152834839769926" />
         <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/activity_main.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/fragment_home.xml" value="0.5" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/fragment_video_form.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/item_discover.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/layout/item_news.xml" value="0.5" />
         <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/user/AndroidStudioProjects/NewsApp/app/src/main/res/menu/main_menu.xml" value="0.27291666666666664" />
       </map>
     </option>
   </component>
