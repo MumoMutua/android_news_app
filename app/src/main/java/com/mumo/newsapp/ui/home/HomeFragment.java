@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mumo.newsapp.ObjectBox;
 import com.mumo.newsapp.adapters.BrowseAdapter;
 import com.mumo.newsapp.adapters.DiscoverAdapter;
 import com.mumo.newsapp.databinding.FragmentHomeBinding;
@@ -21,6 +22,8 @@ import com.mumo.newsapp.models.Discover;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.objectbox.Box;
+
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
@@ -29,6 +32,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView discoverRecyclerView;
     private List<Discover> discoverList = new ArrayList<>();
     private List<Browse> browseList = new ArrayList<>();
+    private Box<Discover> discoverBox = ObjectBox.get().boxFor(Discover.class);
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,10 +50,12 @@ public class HomeFragment extends Fragment {
                 new LinearLayoutManager(requireActivity())
         );
 
-        discoverList.add(new Discover("https://images.unsplash.com/photo-1646911339408-2af2aaf6eb20?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDV8QkpKTXR0ZURKQTR8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"));
-        discoverList.add(new Discover("https://images.unsplash.com/photo-1638913975386-d61f0ec6500d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"));
-        discoverList.add(new Discover("https://images.unsplash.com/photo-1647496849037-3390ed7805a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0N3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"));
+        //discoverList.add(new Discover("https://images.unsplash.com/photo-1646911339408-2af2aaf6eb20?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHx0b3BpYy1mZWVkfDV8QkpKTXR0ZURKQTR8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"));
+       // discoverList.add(new Discover("https://images.unsplash.com/photo-1638913975386-d61f0ec6500d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxlZGl0b3JpYWwtZmVlZHwxfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60"));
+       // discoverList.add(new Discover("https://images.unsplash.com/photo-1647496849037-3390ed7805a7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw0N3x8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=60"));
 
+        discoverList.clear();
+        discoverList.addAll(discoverBox.getAll());
         discoverAdapter = new DiscoverAdapter(discoverList, getActivity());
         binding.recyclerDiscover.setAdapter(discoverAdapter);
 
