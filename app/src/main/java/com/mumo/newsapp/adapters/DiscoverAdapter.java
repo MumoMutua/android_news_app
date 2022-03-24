@@ -13,8 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mumo.newsapp.R;
 import com.mumo.newsapp.models.Discover;
+import com.mumo.newsapp.utils.CustomDialog;
 
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
 
     List<Discover> discoverList;
     Context context;
+    FloatingActionButton playVideo;
 
     public DiscoverAdapter(List<Discover> discoverList, Context context) {
         this.discoverList = discoverList;
@@ -54,12 +57,21 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
             super(itemView);
 
             imgDiscover = itemView.findViewById(R.id.img_discover);
+            playVideo = itemView.findViewById(R.id.btn_discover_play);
 
-            itemView.setOnClickListener(v ->{
+            playVideo.setOnClickListener(v ->{
                 String url = discoverList.get(getAdapterPosition()).getVideo_url();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 context.startActivity(intent);
+            });
+
+            itemView.setOnLongClickListener(v -> {
+
+                Discover discover = discoverList.get(getAdapterPosition());
+                new CustomDialog(context).showDiscoverDialog(discover);
+
+                return true;
             });
         }
     }
