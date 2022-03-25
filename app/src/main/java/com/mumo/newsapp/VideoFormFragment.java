@@ -52,6 +52,7 @@ public class VideoFormFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         verifyPermissions();
         launchFilePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -72,17 +73,9 @@ public class VideoFormFragment extends Fragment {
                         }
                     }
                 });
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if(getArguments().containsKey("UPDATE") && getArguments().getBoolean("UPDATE")){
+        if(getArguments() != null && getArguments().containsKey("UPDATE") && getArguments().getBoolean("UPDATE")){
 
             discover = discoverBox.get(getArguments().getLong("DISCOVER"));
-            binding.inputVideoUrl.setText(discover.getVideo_url());
-            //binding.imgAddDiscover.setImageURI(Uri.parse(discover.getImage()));
-            Glide.with(requireActivity()).load(Uri.parse(discover.getImage())).into(binding.imgAddDiscover);
             image_url = discover.getImage();
 
             Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
@@ -93,6 +86,19 @@ public class VideoFormFragment extends Fragment {
             Date date = new Date();
             discover.setCreated_at(formatter.format(date));
 
+        }
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getArguments() != null && getArguments().containsKey("UPDATE") && getArguments().getBoolean("UPDATE")){
+
+            binding.inputVideoUrl.setText(discover.getVideo_url());
+            //binding.imgAddDiscover.setImageURI(Uri.parse(discover.getImage()));
+            //Glide.with(requireActivity()).load(Uri.parse(discover.getImage())).into(binding.imgAddDiscover);
+
+            Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
         }
 
     }
