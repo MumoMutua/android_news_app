@@ -66,12 +66,14 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
                 context.startActivity(intent);
             });
 
-            itemView.setOnLongClickListener(v -> {
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    Discover discover = discoverList.get(getAdapterPosition());
+                    new CustomDialog(context, v).showDiscoverDialog(discover);
 
-                Discover discover = discoverList.get(getAdapterPosition());
-                new CustomDialog(context).showDiscoverDialog(discover);
-
-                return true;
+                    return true;
+                }
             });
         }
     }

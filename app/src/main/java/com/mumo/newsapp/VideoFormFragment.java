@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.mumo.newsapp.databinding.FragmentVideoFormBinding;
 import com.mumo.newsapp.models.Discover;
 
@@ -39,6 +41,7 @@ public class VideoFormFragment extends Fragment {
     ActivityResultLauncher<Intent> launchFilePicker;
     String image_url = "Empty";
     Box<Discover> discoverBox = ObjectBox.get().boxFor(Discover.class);
+    Discover discover;
 
     public VideoFormFragment() {
         // Required empty public constructor
@@ -49,6 +52,7 @@ public class VideoFormFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        verifyPermissions();
         launchFilePicker = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -68,6 +72,29 @@ public class VideoFormFragment extends Fragment {
                         }
                     }
                 });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if(getArguments().containsKey("UPDATE") && getArguments().getBoolean("UPDATE")){
+
+            discover = discoverBox.get(getArguments().getLong("DISCOVER"));
+            binding.inputVideoUrl.setText(discover.getVideo_url());
+            //binding.imgAddDiscover.setImageURI(Uri.parse(discover.getImage()));
+            Glide.with(requireActivity()).load(Uri.parse(discover.getImage())).into(binding.imgAddDiscover);
+            image_url = discover.getImage();
+
+            Toast.makeText(getActivity(), "Permission Granted", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            discover = new Discover();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd / MM /yyyy");
+            Date date = new Date();
+            discover.setCreated_at(formatter.format(date));
+
+        }
+
     }
 
     private void fillImageData(Intent data) {
@@ -120,14 +147,9 @@ public class VideoFormFragment extends Fragment {
 
             // 1. arrange data in the object box
 
-            Discover discover = new Discover();
             discover.setImage(image_url);
             discover.setVideo_url(video_url);
             discover.setIs_external_image(false);
-
-            SimpleDateFormat formatter = new SimpleDateFormat("dd / MM /yyyy");
-            Date date = new Date();
-            discover.setCreated_at(formatter.format(date));
 
             // 2. save data
             discoverBox.put(discover);
@@ -137,6 +159,7 @@ public class VideoFormFragment extends Fragment {
         }
 
     }
+
 
     public void verifyPermissions(){
         String [] permissions={
