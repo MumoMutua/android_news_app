@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mumo.newsapp.Networking.pojos.Article;
 import com.mumo.newsapp.R;
 import com.mumo.newsapp.models.Browse;
 import com.mumo.newsapp.models.Discover;
@@ -20,10 +21,10 @@ import java.util.List;
 
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder>{
 
-    List<Browse> browseList;
+    List<Article> browseList;
     Context context;
 
-    public BrowseAdapter(List<Browse>  browseList, Context context) {
+    public BrowseAdapter(List<Article>  browseList, Context context) {
         this.browseList = browseList;
         this.context = context;
     }
@@ -39,9 +40,10 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
-        Glide.with(context).load(browseList.get(position).getImage()).into(holder.imgBrowse);
-        holder.textTitle.setText(browseList.get(position).getTextTitle());
-        holder.textSub.setText(browseList.get(position).getTextSubTitle());
+        Article article = browseList.get(position);
+        Glide.with(context).load(article.getUrlToImage()).into(holder.imgBrowse);
+        holder.textTitle.setText(article.getTitle());
+        holder.textSub.setText(article.getAuthor());
 
     }
 

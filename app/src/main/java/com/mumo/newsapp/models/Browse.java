@@ -1,38 +1,45 @@
 package com.mumo.newsapp.models;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.mumo.newsapp.Networking.pojos.Article;
+
+import java.util.List;
+
 public class Browse {
-    String image;
-    String textTitle;
-    String textSubTitle;
 
+        @SerializedName("status")
+        @Expose
+        private String status;
+        @SerializedName("totalResults")
+        @Expose
+        private Integer totalResults;
+        @SerializedName("articles")
+        @Expose
+        private List<Article> articles = null;
 
-    public Browse(String image, String textTitle, String textSubTitle) {
-        this.image = image;
-        this.textTitle = textTitle;
-        this.textSubTitle = textSubTitle;
-    }
+        public String getStatus() {
+            return status;
+        }
 
-    public String getImage() {
-        return image;
-    }
+        public void setStatus(String status) {
+            this.status = status;
+        }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
+        public Integer getTotalResults() {
+            return totalResults;
+        }
 
-    public String getTextTitle() {
-        return textTitle;
-    }
+        public void setTotalResults(Integer totalResults) {
+            this.totalResults = totalResults;
+        }
 
-    public void setTextTitle(String textTitle) {
-        this.textTitle = textTitle;
-    }
+        public List<Article> getArticles() {
+            return articles;
+        }
 
-    public String getTextSubTitle() {
-        return textSubTitle;
-    }
+        public void setArticles(List<Article> articles) {
+            this.articles = articles;
+        }
 
-    public void setTextSubTitle(String textSubTitle) {
-        this.textSubTitle = textSubTitle;
-    }
 }

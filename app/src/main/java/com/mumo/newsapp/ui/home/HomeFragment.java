@@ -1,10 +1,17 @@
 package com.mumo.newsapp.ui.home;
 
+import static android.content.ContentValues.TAG;
+
+import android.app.Notification;
+import android.content.ActivityNotFoundException;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -12,6 +19,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mumo.newsapp.Networking.ServiceGenerator;
+import com.mumo.newsapp.Networking.URLs;
+import com.mumo.newsapp.Networking.pojos.Article;
 import com.mumo.newsapp.ObjectBox;
 import com.mumo.newsapp.adapters.BrowseAdapter;
 import com.mumo.newsapp.adapters.DiscoverAdapter;
@@ -23,6 +33,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.objectbox.Box;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
 
@@ -33,6 +46,7 @@ public class HomeFragment extends Fragment {
     private List<Discover> discoverList = new ArrayList<>();
     private List<Browse> browseList = new ArrayList<>();
     private Box<Discover> discoverBox = ObjectBox.get().boxFor(Discover.class);
+    private List<Article> articles = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -61,14 +75,15 @@ public class HomeFragment extends Fragment {
         discoverAdapter = new DiscoverAdapter(discoverList, getActivity());
         binding.recyclerDiscover.setAdapter(discoverAdapter);
 
-        browseList.clear();
-        browseList.add(new Browse("https://images.unsplash.com/uploads/141103282695035fa1380/95cdfeef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGpvYnN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60", "Top UI/UX Designs", "Bryan Gachiri | 3 Hrs Ago"));
-        browseList.add(new Browse("https://images.unsplash.com/photo-1546776230-bb86256870ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHJvYm90c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60", "Robots. Where are we Heading?","Mikashi Guasami | Now"));
-        browseList.add(new Browse("https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGpvYnN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60","These Top Jobs are waiting for you","Jobs in Kenya | 1 Day Ago"));
 
-        browseAdapter = new BrowseAdapter(browseList, getActivity());
+        //browseList.add(new Browse("https://images.unsplash.com/uploads/141103282695035fa1380/95cdfeef?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTN8fGpvYnN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60", "Top UI/UX Designs", "Bryan Gachiri | 3 Hrs Ago"));
+        //browseList.add(new Browse("https://images.unsplash.com/photo-1546776230-bb86256870ce?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTB8fHJvYm90c3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60", "Robots. Where are we Heading?","Mikashi Guasami | Now"));
+        //browseList.add(new Browse("https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTl8fGpvYnN8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60","These Top Jobs are waiting for you","Jobs in Kenya | 1 Day Ago"));
+
+        browseAdapter = new BrowseAdapter(articles, getActivity());
         binding.recyclerBrowse.setAdapter(browseAdapter);
 
+        getBrowseData();
 
         return root;
     }
@@ -77,5 +92,48 @@ public class HomeFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+    public void getBrowseData(){
+
+        Call<Browse> call = ServiceGenerator.getInstance()
+                .getApiConnector()
+                .getNews("Technology", "2022-03-28", "popularity", URLs.API_KEY);
+
+        call.enqueue(new Callback<Browse>() {
+            @Override
+            public void onResponse(Call<Browse> call, Response<Browse> response) {
+
+                if(response.code() == 200 && response.body()!= null){
+
+                    articles.clear();
+                    articles.addAll(response.body().getArticles());
+                    browseAdapter.notifyDataSetChanged();
+
+                }
+                else{
+                    Log.d("TEST::", "onResponse: " + response.message());
+                    try {
+                        Toast.makeText(requireActivity(), "Something went Wrong", Toast.LENGTH_SHORT).show();
+                    }
+                    catch (ActivityNotFoundException e){
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Browse> call, Throwable t) {
+
+                Log.d("TEST::", "onFailure : " +t.getMessage());
+                try {
+                    Toast.makeText(requireActivity(), "Please check your Internet Connection", Toast.LENGTH_SHORT).show();
+                }
+                catch (ActivityNotFoundException e){
+                    e.printStackTrace();
+                }
+
+            }
+        });
     }
 }
