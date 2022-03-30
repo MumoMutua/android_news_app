@@ -27,8 +27,16 @@
         android:name="com.mumo.newsapp.VideoFormFragment"
         android:label="Add a Video"
         tools:layout="@layout/fragment_video_form" />
-
-
+    <fragment
+        android:id="@+id/newsDetailsFragment"
+        android:name="com.mumo.newsapp.NewsDetailsFragment"
+        android:label="fragment_news_details"
+        tools:layout="@layout/fragment_news_details" />
+    <fragment
+        android:id="@+id/browseFragment"
+        android:name="com.mumo.newsapp.BrowseFragment"
+        android:label="fragment_browse"
+        tools:layout="@layout/fragment_browse" />
 
 
 </navigation>

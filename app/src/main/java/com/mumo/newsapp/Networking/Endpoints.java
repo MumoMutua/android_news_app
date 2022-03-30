@@ -16,5 +16,6 @@ public interface Endpoints {
             @Query("q") String topic,
             @Query("from") String from,
             @Query("sortBy") String sortBy,
-            @Query("apiKey") String apiKey);
+            @Query("apiKey") String apiKey,
+            @Query("pageSize") int size);
 }

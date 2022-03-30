@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavAction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -23,6 +25,7 @@ import com.mumo.newsapp.Networking.ServiceGenerator;
 import com.mumo.newsapp.Networking.URLs;
 import com.mumo.newsapp.Networking.pojos.Article;
 import com.mumo.newsapp.ObjectBox;
+import com.mumo.newsapp.R;
 import com.mumo.newsapp.adapters.BrowseAdapter;
 import com.mumo.newsapp.adapters.DiscoverAdapter;
 import com.mumo.newsapp.databinding.FragmentHomeBinding;
@@ -82,6 +85,10 @@ public class HomeFragment extends Fragment {
 
         browseAdapter = new BrowseAdapter(articles, getActivity());
         binding.recyclerBrowse.setAdapter(browseAdapter);
+        binding.btnLoadMore.setOnClickListener(v -> {
+
+            Navigation.findNavController(root).navigate(R.id.browseFragment);
+        });
 
         getBrowseData();
 
@@ -97,7 +104,7 @@ public class HomeFragment extends Fragment {
 
         Call<Browse> call = ServiceGenerator.getInstance()
                 .getApiConnector()
-                .getNews("Technology", "2022-03-28", "popularity", URLs.API_KEY);
+                .getNews("Technology", "2022-03-28", "popularity", URLs.API_KEY, 5);
 
         call.enqueue(new Callback<Browse>() {
             @Override
