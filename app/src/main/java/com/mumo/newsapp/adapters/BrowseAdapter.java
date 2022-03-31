@@ -1,6 +1,7 @@
 package com.mumo.newsapp.adapters;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,11 +19,13 @@ import com.mumo.newsapp.R;
 import com.mumo.newsapp.models.Browse;
 import com.mumo.newsapp.models.Discover;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder>{
 
-    List<Article> browseList;
+    static List<Article> browseList;
     Context context;
 
     public BrowseAdapter(List<Article>  browseList, Context context) {
@@ -61,7 +65,19 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder
             imgBrowse = itemView.findViewById(R.id.imgBrowse);
             textTitle = itemView.findViewById(R.id.textTitle);
             textSub = itemView.findViewById(R.id.textSub);
+
+            itemView.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("IMAGE", browseList.get(getAdapterPosition()).getUrlToImage());
+                bundle.putString("TITLE", browseList.get(getAdapterPosition()).getTitle());
+                bundle.putString("CONTENT", browseList.get(getAdapterPosition()).getContent());
+
+                Navigation.findNavController(v).navigate(R.id.newsDetailsFragment, bundle);
+
+            });
+
         }
     }
+
 }
 
