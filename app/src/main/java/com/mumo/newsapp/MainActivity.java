@@ -18,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ImageView image = findViewById(R.id.img_mine);
-        Glide.with(this).load(R.raw.animation3).into(image);
+        Glide.with(this).load(R.raw.mail).into(image);
 
         delayHandler.postDelayed(() -> {
            startActivity(new Intent(MainActivity.this, HomeActivity.class));

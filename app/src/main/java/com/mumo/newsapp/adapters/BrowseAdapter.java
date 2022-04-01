@@ -71,6 +71,8 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder
                 bundle.putString("IMAGE", browseList.get(getAdapterPosition()).getUrlToImage());
                 bundle.putString("TITLE", browseList.get(getAdapterPosition()).getTitle());
                 bundle.putString("CONTENT", browseList.get(getAdapterPosition()).getContent());
+                bundle.putString("URL", browseList.get(getAdapterPosition()).getUrl());
+                bundle.putString("AUTHOR", browseList.get(getAdapterPosition()).getAuthor());
 
                 Navigation.findNavController(v).navigate(R.id.newsDetailsFragment, bundle);
 

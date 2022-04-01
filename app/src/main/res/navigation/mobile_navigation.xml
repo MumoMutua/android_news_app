@@ -14,13 +14,13 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.mumo.newsapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="Discover"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.mumo.newsapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="Messages"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/videoFormFragment"
@@ -30,12 +30,12 @@
     <fragment
         android:id="@+id/newsDetailsFragment"
         android:name="com.mumo.newsapp.NewsDetailsFragment"
-        android:label="fragment_news_details"
+        android:label="News details"
         tools:layout="@layout/fragment_news_details" />
     <fragment
         android:id="@+id/browseFragment"
         android:name="com.mumo.newsapp.BrowseFragment"
-        android:label="fragment_browse"
+        android:label="Browse"
         tools:layout="@layout/fragment_browse" />
 
 

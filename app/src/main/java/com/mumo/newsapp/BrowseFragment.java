@@ -4,9 +4,12 @@ import android.content.ActivityNotFoundException;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -65,7 +68,8 @@ public class BrowseFragment extends Fragment {
         View root = binding.getRoot();
 
         binding.browseRecyclerview.setLayoutManager(new LinearLayoutManager(requireActivity()));
-        binding.browseRecyclerview.setNestedScrollingEnabled(true);
+        binding.browseRecyclerview.setNestedScrollingEnabled(false);
+        binding.browseRecyclerview.setHasFixedSize(true);
 
         browseAdapter = new BrowseAdapter(articles, requireActivity());
         binding.browseRecyclerview.setAdapter(browseAdapter);
@@ -78,6 +82,26 @@ public class BrowseFragment extends Fragment {
         progressDialog.show();
 
         getBrowseData("Technology", toDate(), "relevance");
+
+        binding.inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+
+                if (actionId == EditorInfo.IME_ACTION_SEARCH){
+                    if (binding.inputSearch.getText().toString().trim().isEmpty()){
+                        binding.inputSearch.setError("Please enter a search topic");
+                        Snackbar.make(root, "Please enter a search topic", Snackbar.LENGTH_LONG).show();
+                    }
+                    else {
+                        topic = binding.inputSearch.getText().toString().trim();
+                        getBrowseData(topic, toDate(), "relevance");
+                    }
+                    return true;
+                }
+
+                return false;
+            }
+        });
 
         binding.textInputLayout2.setEndIconOnClickListener(v -> {
             if (binding.inputSearch.getText().toString().trim().isEmpty()){
