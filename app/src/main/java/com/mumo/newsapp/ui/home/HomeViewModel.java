@@ -15,13 +15,14 @@ import java.util.List;
 
 public class HomeViewModel extends AndroidViewModel {
 
-    private MutableLiveData<List<Article>> articles;
+    private MutableLiveData<List<Article>> articles = new MutableLiveData<>();
+    private MutableLiveData<Article> selected_article = new MutableLiveData<>();
 
     public HomeViewModel(@NonNull Application application) {
         super(application);
     }
 
-    public List<Article> getNews(){
+    public MutableLiveData<List<Article>> getNews(){
 
         return new NewsRepo(getApplication().getApplicationContext()).getBrowseData();
 
@@ -29,15 +30,14 @@ public class HomeViewModel extends AndroidViewModel {
 
     public LiveData<List<Article>> displayNews() {
 
-        if(articles == null ){
-            articles = new MutableLiveData<>();
-            articles.setValue(getNews());
-
-        }
-        else if (articles.getValue().size() == 0){
-            getNews();
-        }
-
+        articles = getNews();
         return articles;
+
+    }
+    public void setSelectedNews(Article article){
+        selected_article.setValue(article);
+    }
+    public LiveData<Article> getSelectedNews(){
+        return selected_article;
     }
 }

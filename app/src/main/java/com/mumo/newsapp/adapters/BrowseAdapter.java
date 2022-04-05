@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +20,7 @@ import com.mumo.newsapp.Networking.pojos.Article;
 import com.mumo.newsapp.R;
 import com.mumo.newsapp.models.Browse;
 import com.mumo.newsapp.models.Discover;
+import com.mumo.newsapp.ui.home.HomeViewModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,10 +30,12 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder
 
     static List<Article> browseList;
     Context context;
+    HomeViewModel homeViewModel;
 
     public BrowseAdapter(List<Article>  browseList, Context context) {
         this.browseList = browseList;
         this.context = context;
+        this.homeViewModel = new ViewModelProvider((ViewModelStoreOwner) context).get(HomeViewModel.class);
     }
 
     @NonNull
@@ -54,7 +59,7 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder
     @Override
     public int getItemCount() { return browseList.size(); }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBrowse;
         TextView textTitle;
         TextView textSub;
@@ -67,14 +72,15 @@ public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder
             textSub = itemView.findViewById(R.id.textSub);
 
             itemView.setOnClickListener(v -> {
-                Bundle bundle = new Bundle();
-                bundle.putString("IMAGE", browseList.get(getAdapterPosition()).getUrlToImage());
-                bundle.putString("TITLE", browseList.get(getAdapterPosition()).getTitle());
-                bundle.putString("CONTENT", browseList.get(getAdapterPosition()).getContent());
-                bundle.putString("URL", browseList.get(getAdapterPosition()).getUrl());
-                bundle.putString("AUTHOR", browseList.get(getAdapterPosition()).getAuthor());
+//                Bundle bundle = new Bundle();
+//                bundle.putString("IMAGE", browseList.get(getAdapterPosition()).getUrlToImage());
+//                bundle.putString("TITLE", browseList.get(getAdapterPosition()).getTitle());
+//                bundle.putString("CONTENT", browseList.get(getAdapterPosition()).getContent());
+//                bundle.putString("URL", browseList.get(getAdapterPosition()).getUrl());
+//                bundle.putString("AUTHOR", browseList.get(getAdapterPosition()).getAuthor());
 
-                Navigation.findNavController(v).navigate(R.id.newsDetailsFragment, bundle);
+                homeViewModel.setSelectedNews(browseList.get(getAdapterPosition()));
+                Navigation.findNavController(v).navigate(R.id.newsDetailsFragment);
 
             });
 

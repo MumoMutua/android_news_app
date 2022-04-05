@@ -79,9 +79,9 @@ public class BrowseFragment extends Fragment {
         progressDialog.getProgressHelper().setBarColor(Color.parseColor("#5474F1"));
         progressDialog.setTitleText("Loading...");
         progressDialog.setCancelable(false);
-        progressDialog.show();
+       // progressDialog.show();
 
-        getBrowseData("Technology", toDate(), "relevance");
+        // getBrowseData("Technology", toDate(), "relevance");
 
         binding.inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -195,5 +195,17 @@ public class BrowseFragment extends Fragment {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = new Date();
         return dateFormat.format(date).toString();
+    }
+
+    @Override
+    public void onResume() {
+
+        homeViewModel.getNews().observe(requireActivity(), news ->{
+            articles.clear();
+            articles.addAll(news);
+            browseAdapter.notifyDataSetChanged();
+        });
+
+        super.onResume();
     }
 }
