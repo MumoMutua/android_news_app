@@ -1,7 +1,7 @@
 package com.mumo.newsapp;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -23,6 +23,7 @@ public class NewsDetailsFragment extends Fragment {
 
     FragmentNewsDetailsBinding binding;
     private HomeViewModel homeViewModel;
+    private Context context;
 
     public NewsDetailsFragment() {
     }
@@ -31,6 +32,7 @@ public class NewsDetailsFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         homeViewModel = new ViewModelProvider(requireActivity()).get(HomeViewModel.class);
+        context = requireActivity();
     }
 
     @Nullable
@@ -105,12 +107,12 @@ public class NewsDetailsFragment extends Fragment {
             binding.textNewsDetails.setText(article.getContent());
             binding.textDetailsAuthor.setText(article.getAuthor());
             binding.textDetailsTitle.setText(article.getTitle());
-            Glide.with(requireActivity()).load(article.getUrlToImage()).into(binding.imageNewsDetails);
+            Glide.with(context).load(article.getUrlToImage()).into(binding.imageNewsDetails);
 
             setUrlButtonClickListener(article.getUrl(), article.getTitle());
 
-            if(((HomeActivity)getActivity()).getSupportActionBar() != null){
-                ((HomeActivity)getActivity()).getSupportActionBar().setTitle(article.getTitle());
+            if(((HomeActivity)context).getSupportActionBar() != null){
+                ((HomeActivity)context).getSupportActionBar().setTitle(article.getTitle());
             }
 
         });

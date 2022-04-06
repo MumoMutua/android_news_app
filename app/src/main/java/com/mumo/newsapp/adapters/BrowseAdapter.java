@@ -1,7 +1,6 @@
 package com.mumo.newsapp.adapters;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,23 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.Navigation;
-import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mumo.newsapp.Networking.pojos.Article;
 import com.mumo.newsapp.R;
-import com.mumo.newsapp.models.Browse;
-import com.mumo.newsapp.models.Discover;
 import com.mumo.newsapp.ui.home.HomeViewModel;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class BrowseAdapter extends RecyclerView.Adapter<BrowseAdapter.ViewHolder>{
 
-    static List<Article> browseList;
+    List<Article> browseList;
     Context context;
     HomeViewModel homeViewModel;
 

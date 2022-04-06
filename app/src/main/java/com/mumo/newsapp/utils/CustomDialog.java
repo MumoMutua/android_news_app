@@ -14,6 +14,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import com.mumo.newsapp.ObjectBox;
 import com.mumo.newsapp.R;
+import com.mumo.newsapp.adapters.DiscoverAdapter;
+import com.mumo.newsapp.databinding.DiscoverOptionsBinding;
 import com.mumo.newsapp.models.Discover;
 
 import io.objectbox.Box;
@@ -22,17 +24,16 @@ public class CustomDialog {
 
     BottomSheetDialog discoverSheet;
     Context context;
+    DiscoverOptionsBinding discoverOptionsBinding;
     View view;
     Box<Discover> discoverBox = ObjectBox.get().boxFor(Discover.class);
 
     public CustomDialog(Context context, View view){
-
         this.context = context;
         this.view = view;
-
     }
 
-    public void showDiscoverDialog(Discover discover) {
+    public void showDiscoverDialog(Discover discover, DiscoverAdapter discoverAdapter) {
 
         discoverSheet = new BottomSheetDialog(context);
         discoverSheet.setContentView(R.layout.discover_options);
@@ -68,19 +69,15 @@ public class CustomDialog {
 
             discoverSheet.dismiss(); // used to programmatically remove the dialog from view
 
-            Snackbar.make(view, "Are you sure you want to delete this discover?", Snackbar.LENGTH_SHORT)
-                    .setAction("Confirm", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            discoverBox.remove(discover.getId());
-                            Navigation.findNavController(view).navigate(R.id.navigation_home);
+            Snackbar.make(view, "Are you sure you want to delete this discover?", Snackbar.LENGTH_LONG)
+                    .setAction("Confirm", v1 -> {
+                        discoverBox.remove(discover.getId());
+                        Navigation.findNavController(view).navigate(R.id.navigation_home);
 
-                        }
                     }).show();
-
-
         });
 
         discoverSheet.show();
     }
+
 }

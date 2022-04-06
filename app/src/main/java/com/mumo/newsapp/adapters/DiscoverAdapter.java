@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mumo.newsapp.R;
 import com.mumo.newsapp.models.Discover;
+import com.mumo.newsapp.ui.home.HomeFragment;
 import com.mumo.newsapp.utils.CustomDialog;
 
 import java.util.List;
@@ -24,9 +25,16 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
 
     List<Discover> discoverList;
     Context context;
+    HomeFragment homeFragment;
     FloatingActionButton playVideo;
 
-    public DiscoverAdapter(List<Discover> discoverList, Context context) {
+    public DiscoverAdapter(List<Discover> discoverList, Context context, HomeFragment homeFragment) {
+        this.discoverList = discoverList;
+        this.context = context;
+        this.homeFragment = homeFragment;
+    }
+
+    public DiscoverAdapter(List<Discover> discoverList, Context context){
         this.discoverList = discoverList;
         this.context = context;
     }
@@ -50,6 +58,12 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
         return discoverList.size();
     }
 
+    public void deleteDiscover(List<Discover> list){
+        discoverList.clear();
+        discoverList.addAll(list);
+        notifyDataSetChanged();
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgDiscover;
 
@@ -68,7 +82,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
 
             itemView.setOnLongClickListener(v -> {
                 Discover discover = discoverList.get(getAdapterPosition());
-                new CustomDialog(context, v).showDiscoverDialog(discover);
+                new CustomDialog(context, v).showDiscoverDialog(discover, DiscoverAdapter.this);
 
                 return true;
             });
