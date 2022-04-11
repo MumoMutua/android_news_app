@@ -26,7 +26,6 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
     List<Discover> discoverList;
     Context context;
     HomeFragment homeFragment;
-    FloatingActionButton playVideo;
 
     public DiscoverAdapter(List<Discover> discoverList, Context context, HomeFragment homeFragment) {
         this.discoverList = discoverList;
@@ -66,6 +65,7 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgDiscover;
+        FloatingActionButton playVideo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -44,6 +44,7 @@ public class NotificationsFragment extends Fragment {
         binding.btnRegister.setOnClickListener(v->{
             showRegisterDialog();
         });
+
         return root;
     }
 
@@ -68,6 +69,10 @@ public class NotificationsFragment extends Fragment {
             new PreferenceStorage(context).setAuthStatus(true);
             bottomSheetDialog.dismiss();
             showOrHideLayouts();
+        });
+        register.setOnClickListener(v ->{
+            bottomSheetDialog.dismiss();
+            showRegisterDialog();
         });
         bottomSheetDialog.show();
     }
@@ -94,5 +99,22 @@ public class NotificationsFragment extends Fragment {
 
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(context);
         bottomSheetDialog.setContentView(R.layout.bottom_sheet_register_dialog);
+
+        Button btnRegister = bottomSheetDialog.findViewById(R.id.button_register);
+        Button switchLogIn = bottomSheetDialog.findViewById(R.id.button_log_in);
+
+        TextInputEditText inputRegisterUsername, inputEmail, inputPhoneNumber, inputPassword, inputConfirmPassword;
+        inputRegisterUsername = bottomSheetDialog.findViewById(R.id.input_username);
+        inputEmail = bottomSheetDialog.findViewById(R.id.input_email);
+        inputPhoneNumber = bottomSheetDialog.findViewById(R.id.input_phone_number);
+        inputPassword = bottomSheetDialog.findViewById(R.id.input_password);
+        inputConfirmPassword = bottomSheetDialog.findViewById(R.id.input_confirm_password);
+
+        switchLogIn.setOnClickListener(v-> {
+            bottomSheetDialog.dismiss();
+            showLogInDialog();
+        });
+        bottomSheetDialog.show();
+
     }
 }
