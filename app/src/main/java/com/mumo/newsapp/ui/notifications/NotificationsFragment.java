@@ -2,10 +2,12 @@ package com.mumo.newsapp.ui.notifications;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,14 +16,25 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.textfield.TextInputEditText;
+import com.mumo.newsapp.Networking.ChatServiceGenerator;
+import com.mumo.newsapp.Networking.pojos.RegisterRequest;
+import com.mumo.newsapp.Networking.pojos.UserResponse;
 import com.mumo.newsapp.R;
 import com.mumo.newsapp.databinding.FragmentNotificationsBinding;
 import com.mumo.newsapp.utils.PreferenceStorage;
+
+import java.util.Locale;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NotificationsFragment extends Fragment {
 
     private FragmentNotificationsBinding binding;
     private Context context;
+    private SweetAlertDialog pDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,6 +49,9 @@ public class NotificationsFragment extends Fragment {
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
+        pDialog.setTitle("Loading...");
         showOrHideLayouts();
 
         binding.btnLogIn.setOnClickListener(v->{
@@ -114,7 +130,56 @@ public class NotificationsFragment extends Fragment {
             bottomSheetDialog.dismiss();
             showLogInDialog();
         });
+
+        btnRegister.setOnClickListener(v->{
+            RegisterRequest registerRequest = new RegisterRequest(
+                    inputPhoneNumber.getText().toString().trim(),
+                    inputRegisterUsername.getText().toString().trim(),
+                    inputEmail.getText().toString().trim(),
+                    inputPassword.getText().toString().trim()
+            );
+            registerUser(registerRequest);
+        });
         bottomSheetDialog.show();
 
+    }
+    public void registerUser(RegisterRequest registerRequest){
+        pDialog.setContentText("Registering User");
+        pDialog.show();
+        Call<UserResponse> call = ChatServiceGenerator.getInstance()
+                .getApiConnector().register(registerRequest);
+
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                pDialog.dismiss();
+                if (response.code() == 200 && response.body()!= null){
+                    new PreferenceStorage(context).setAuthStatus(true);
+                    new PreferenceStorage(context).setUserData(response.body());
+
+                    SweetAlertDialog successDialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE);
+                    successDialog.setTitle("Welcome " + response.body().getUsername());
+                    successDialog.setContentText("Registration Successful");
+                    successDialog.show();
+                }
+                else if (response.code() == 500){
+                    SweetAlertDialog errorDialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
+                    errorDialog.setTitle("Oops ");
+                    errorDialog.setContentText(response.message());
+                    errorDialog.show();
+                }
+                else {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+                Log.d("TEST::", "onResponse: " +response.message());
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                pDialog.dismiss();
+                Toast.makeText(context, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                Log.d("TEST::", "onFailure: " +t.getMessage());
+            }
+        });
     }
 }
