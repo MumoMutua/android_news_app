@@ -1,5 +1,6 @@
 package com.mumo.newsapp.Networking;
 
+import com.mumo.newsapp.Networking.pojos.ChatResponse;
 import com.mumo.newsapp.Networking.pojos.RegisterRequest;
 import com.mumo.newsapp.Networking.pojos.UserResponse;
 import com.mumo.newsapp.models.Browse;
@@ -28,5 +29,8 @@ public interface Endpoints {
     @FormUrlEncoded
     @POST ("api/login")
     Call<UserResponse> login (@Field("username") String username, @Field("password") String password);
+
+    @GET("api/chats")
+    Call<ChatResponse> getChats();
 
 }

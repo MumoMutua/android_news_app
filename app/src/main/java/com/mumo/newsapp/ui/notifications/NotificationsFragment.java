@@ -1,6 +1,6 @@
 package com.mumo.newsapp.ui.notifications;
 
-import android.content.Context;
+    import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,19 +13,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+    import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.android.material.textfield.TextInputEditText;
+    import com.google.android.material.bottomsheet.BottomSheetDialog;
+    import com.google.android.material.snackbar.Snackbar;
+    import com.google.android.material.textfield.TextInputEditText;
 import com.mumo.newsapp.Networking.ChatServiceGenerator;
-import com.mumo.newsapp.Networking.pojos.RegisterRequest;
+    import com.mumo.newsapp.Networking.pojos.ChatResponse;
+    import com.mumo.newsapp.Networking.pojos.RegisterRequest;
 import com.mumo.newsapp.Networking.pojos.UserResponse;
 import com.mumo.newsapp.R;
-import com.mumo.newsapp.databinding.FragmentNotificationsBinding;
+    import com.mumo.newsapp.adapters.ChatAdapter;
+    import com.mumo.newsapp.databinding.FragmentNotificationsBinding;
 import com.mumo.newsapp.utils.PreferenceStorage;
 
-import java.util.Locale;
+    import java.util.ArrayList;
+    import java.util.List;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
+    import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,6 +40,8 @@ public class NotificationsFragment extends Fragment {
     private FragmentNotificationsBinding binding;
     private Context context;
     private SweetAlertDialog pDialog;
+    private ChatAdapter chatAdapter;
+    private List<ChatResponse> chats = new ArrayList<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +56,11 @@ public class NotificationsFragment extends Fragment {
 
         binding = FragmentNotificationsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
+
+        chatAdapter = new ChatAdapter(chats, context);
+        binding.recyclerMessage.setAdapter(chatAdapter);
+        binding.recyclerMessage.setLayoutManager(new LinearLayoutManager(context));
+        binding.recyclerMessage.setNestedScrollingEnabled(true);
 
         pDialog = new SweetAlertDialog(context, SweetAlertDialog.PROGRESS_TYPE);
         pDialog.setTitle("Loading...");
@@ -82,6 +94,10 @@ public class NotificationsFragment extends Fragment {
         inputPass = bottomSheetDialog.findViewById(R.id.input_password);
 
         login.setOnClickListener(v -> {
+            login(
+                    inputUsername.getText().toString().trim(),
+                    inputPass.getText().toString().trim()
+            );
             new PreferenceStorage(context).setAuthStatus(true);
             bottomSheetDialog.dismiss();
             showOrHideLayouts();
@@ -101,6 +117,8 @@ public class NotificationsFragment extends Fragment {
             binding.imageView2.setVisibility(View.GONE);
             binding.textView7.setVisibility(View.GONE);
             binding.recyclerMessage.setVisibility(View.VISIBLE);
+
+            fetchChats();
         }
         else {
             binding.btnRegister.setVisibility(View.VISIBLE);
@@ -143,6 +161,45 @@ public class NotificationsFragment extends Fragment {
         bottomSheetDialog.show();
 
     }
+    public void login(String username, String password) {
+        pDialog.setContentText("Logging In");
+        pDialog.show();
+        Call<UserResponse> call = ChatServiceGenerator.getInstance()
+                .getApiConnector().login(username, password);
+
+        call.enqueue(new Callback<UserResponse>() {
+            @Override
+            public void onResponse(Call<UserResponse> call, Response<UserResponse> response) {
+                pDialog.dismiss();
+                if (response.code() == 200 && response.body() != null) {
+                    new PreferenceStorage(context).setAuthStatus(true);
+                    new PreferenceStorage(context).setUserData(response.body());
+
+                    showOrHideLayouts();
+
+                    SweetAlertDialog successDialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE);
+                    successDialog.setTitle("Welcome " + response.body().getUsername());
+                    successDialog.setContentText("LogIn Successful");
+                    successDialog.show();
+                } else if (response.code() == 500) {
+                    SweetAlertDialog errorDialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
+                    errorDialog.setTitle("Oops ");
+                    errorDialog.setContentText(response.message());
+                    errorDialog.show();
+                } else {
+                    Toast.makeText(context, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+                Log.d("TEST::", "onResponse: " + response.message());
+            }
+
+            @Override
+            public void onFailure(Call<UserResponse> call, Throwable t) {
+                pDialog.dismiss();
+                Toast.makeText(context, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                Log.d("TEST::", "onFailure: " + t.getMessage());
+            }
+        });
+    }
     public void registerUser(RegisterRequest registerRequest){
         pDialog.setContentText("Registering User");
         pDialog.show();
@@ -156,6 +213,8 @@ public class NotificationsFragment extends Fragment {
                 if (response.code() == 200 && response.body()!= null){
                     new PreferenceStorage(context).setAuthStatus(true);
                     new PreferenceStorage(context).setUserData(response.body());
+
+                    showOrHideLayouts();
 
                     SweetAlertDialog successDialog = new SweetAlertDialog(context, SweetAlertDialog.SUCCESS_TYPE);
                     successDialog.setTitle("Welcome " + response.body().getUsername());
@@ -179,6 +238,29 @@ public class NotificationsFragment extends Fragment {
                 pDialog.dismiss();
                 Toast.makeText(context, "Please check your internet connection", Toast.LENGTH_SHORT).show();
                 Log.d("TEST::", "onFailure: " +t.getMessage());
+            }
+        });
+    }
+
+    public void fetchChats(){
+        pDialog.setContentText("Fetching Chats");
+        pDialog.show();
+        Call<ChatResponse> call = ChatServiceGenerator.getInstance()
+                .getApiConnector().getChats();
+        call.enqueue(new Callback<ChatResponse>() {
+            @Override
+            public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
+                if (response.code() == 200){
+
+                }
+                else {
+                    Snackbar.make(binding.getRoot(),"You have no chats", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ChatResponse> call, Throwable t) {
+
             }
         });
     }

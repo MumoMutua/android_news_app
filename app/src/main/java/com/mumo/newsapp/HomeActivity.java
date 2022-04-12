@@ -17,6 +17,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mumo.newsapp.databinding.ActivityHomeBinding;
+import com.mumo.newsapp.utils.PreferenceStorage;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -76,7 +77,14 @@ public class HomeActivity extends AppCompatActivity {
 
             navController.navigate(R.id.videoFormFragment);
         }
+        else if (id == R.id.item_logout){
+            //TODO: Add an alert  dialog that asks the user whether they want to logout
+            new PreferenceStorage(this).logout();
+            navController.popBackStack(R.id.navigation_home, true);
+            navController.navigate(R.id.navigation_home);
+        }
         return super.onOptionsItemSelected(item);
+
     }
     @Override
     public boolean onSupportNavigateUp(){
