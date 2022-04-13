@@ -4,10 +4,14 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.mumo.newsapp.Networking.pojos.ChatResponse;
 import com.mumo.newsapp.R;
 
@@ -34,16 +38,32 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        ChatResponse chat = chats.get(position);
+        holder.chatName.setText(chat.getUserFromName());
+        holder.chatMessage.setText(chat.getMessage());
+        Glide.with(context).load("https://picsum.photos/id"+(position+100)+"/70/70").into(holder.imageChat);
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+       return chats.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        TextView chatName, chatMessage;
+        ImageView imageChat;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            chatMessage = itemView.findViewById(R.id.text_chat_message);
+            chatName = itemView.findViewById(R.id.text_chat_name);
+            imageChat = itemView.findViewById(R.id.image_chat);
+
+            itemView.setOnClickListener(v -> {
+                Snackbar.make(v, "Coming Soon", Snackbar.LENGTH_LONG).show();
+            });
         }
     }
 }

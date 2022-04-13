@@ -4,7 +4,8 @@ package com.mumo.newsapp.ui.notifications;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
+    import android.view.ScaleGestureDetector;
+    import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
@@ -245,13 +246,16 @@ public class NotificationsFragment extends Fragment {
     public void fetchChats(){
         pDialog.setContentText("Fetching Chats");
         pDialog.show();
-        Call<ChatResponse> call = ChatServiceGenerator.getInstance()
-                .getApiConnector().getChats();
-        call.enqueue(new Callback<ChatResponse>() {
+        Call<List<ChatResponse>> call = ChatServiceGenerator.getInstance()
+                .getApiConnector().getChats(new PreferenceStorage(context).getUserToken());
+        call.enqueue(new Callback<List<ChatResponse>>() {
             @Override
-            public void onResponse(Call<ChatResponse> call, Response<ChatResponse> response) {
+            public void onResponse(Call<List<ChatResponse>> call, Response<List<ChatResponse>> response) {
+                pDialog.dismiss();
                 if (response.code() == 200){
-
+                    chats.clear();
+                    chats.addAll(response.body());
+                    chatAdapter.notifyDataSetChanged();
                 }
                 else {
                     Snackbar.make(binding.getRoot(),"You have no chats", Snackbar.LENGTH_LONG).show();
@@ -259,7 +263,9 @@ public class NotificationsFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<ChatResponse> call, Throwable t) {
+            public void onFailure(Call<List<ChatResponse>> call, Throwable t) {
+                pDialog.dismiss();
+                Snackbar.make(binding.getRoot(), "Something went wrong", Snackbar.LENGTH_LONG).show();
 
             }
         });

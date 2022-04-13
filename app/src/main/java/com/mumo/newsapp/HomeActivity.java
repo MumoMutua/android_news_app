@@ -1,5 +1,6 @@
 package com.mumo.newsapp;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,6 +23,8 @@ import com.mumo.newsapp.utils.PreferenceStorage;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -78,10 +81,26 @@ public class HomeActivity extends AppCompatActivity {
             navController.navigate(R.id.videoFormFragment);
         }
         else if (id == R.id.item_logout){
+
+            SweetAlertDialog sweetAlertDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE);
+            sweetAlertDialog.setTitle("Warning");
+            sweetAlertDialog.setContentText("Are you sure you want to Log out?");
+            sweetAlertDialog.setCancelText("No").setCancelClickListener(Dialog::onBackPressed);
+
+            sweetAlertDialog.setConfirmText("Yes").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismiss();
+                    new PreferenceStorage(HomeActivity.this).logout();
+                    navController.popBackStack(R.id.navigation_home, true);
+                    navController.navigate(R.id.navigation_home);
+
+                }
+            });
+            sweetAlertDialog.show();
+
             //TODO: Add an alert  dialog that asks the user whether they want to logout
-            new PreferenceStorage(this).logout();
-            navController.popBackStack(R.id.navigation_home, true);
-            navController.navigate(R.id.navigation_home);
+
         }
         return super.onOptionsItemSelected(item);
 
