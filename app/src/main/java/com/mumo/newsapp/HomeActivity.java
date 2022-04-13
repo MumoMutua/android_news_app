@@ -87,15 +87,12 @@ public class HomeActivity extends AppCompatActivity {
             sweetAlertDialog.setContentText("Are you sure you want to Log out?");
             sweetAlertDialog.setCancelText("No").setCancelClickListener(Dialog::onBackPressed);
 
-            sweetAlertDialog.setConfirmText("Yes").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    sweetAlertDialog.dismiss();
-                    new PreferenceStorage(HomeActivity.this).logout();
-                    navController.popBackStack(R.id.navigation_home, true);
-                    navController.navigate(R.id.navigation_home);
+            sweetAlertDialog.setConfirmText("Yes").setConfirmClickListener(sweetAlertDialog1 -> {
+                sweetAlertDialog1.dismiss();
+                new PreferenceStorage(HomeActivity.this).logout();
+                navController.popBackStack(R.id.navigation_home, true);
+                navController.navigate(R.id.navigation_home);
 
-                }
             });
             sweetAlertDialog.show();
 

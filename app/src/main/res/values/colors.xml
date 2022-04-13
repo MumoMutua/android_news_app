@@ -12,4 +12,5 @@
     <color name="red">#FF6962</color>
     <color name="light_gray">#EDEDED</color>
     <color name="dark_gray">#4F4F4F</color>
+    <color name="chat_blue">#5E5474F1</color>
 </resources>

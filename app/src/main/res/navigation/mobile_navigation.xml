@@ -37,6 +37,10 @@
         android:name="com.mumo.newsapp.BrowseFragment"
         android:label="Browse"
         tools:layout="@layout/fragment_browse" />
+    <fragment
+        android:id="@+id/chatDetailsFragment"
+        android:name="com.mumo.newsapp.ChatDetailsFragment"
+        tools:layout="@layout/fragment_chat_details" />
 
 
 </navigation>

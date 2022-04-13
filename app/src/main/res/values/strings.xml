@@ -99,4 +99,5 @@
     </string>
     <string name="logout">Logout</string>
     <string name="add_video">Add Video</string>
+    <string name="send">send</string>
 </resources>
