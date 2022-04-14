@@ -1,11 +1,10 @@
 package com.mumo.newsapp.ui.notifications;
 
-    import android.content.Context;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-    import android.view.ScaleGestureDetector;
-    import android.view.View;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
@@ -14,24 +13,26 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-    import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
-    import com.google.android.material.bottomsheet.BottomSheetDialog;
-    import com.google.android.material.snackbar.Snackbar;
-    import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.mumo.newsapp.Networking.ChatServiceGenerator;
-    import com.mumo.newsapp.Networking.pojos.ChatResponse;
-    import com.mumo.newsapp.Networking.pojos.RegisterRequest;
+import com.mumo.newsapp.Networking.PeopleResponse;
+import com.mumo.newsapp.Networking.pojos.ChatResponse;
+import com.mumo.newsapp.Networking.pojos.RegisterRequest;
 import com.mumo.newsapp.Networking.pojos.UserResponse;
 import com.mumo.newsapp.R;
-    import com.mumo.newsapp.adapters.ChatAdapter;
-    import com.mumo.newsapp.databinding.FragmentNotificationsBinding;
+import com.mumo.newsapp.adapters.ChatAdapter;
+import com.mumo.newsapp.adapters.PeopleAdapter;
+import com.mumo.newsapp.databinding.FragmentNotificationsBinding;
 import com.mumo.newsapp.utils.PreferenceStorage;
 
-    import java.util.ArrayList;
-    import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
-    import cn.pedant.SweetAlert.SweetAlertDialog;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,6 +44,8 @@ public class NotificationsFragment extends Fragment {
     private SweetAlertDialog pDialog;
     private ChatAdapter chatAdapter;
     private List<ChatResponse> chats = new ArrayList<>();
+    private List<PeopleResponse> people = new ArrayList<>();
+    private PeopleAdapter peopleAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,7 +62,8 @@ public class NotificationsFragment extends Fragment {
         View root = binding.getRoot();
 
         chatAdapter = new ChatAdapter(chats, context);
-        binding.recyclerMessage.setAdapter(chatAdapter);
+        peopleAdapter = new PeopleAdapter(people, context);
+        binding.recyclerMessage.setAdapter(peopleAdapter);
         binding.recyclerMessage.setLayoutManager(new LinearLayoutManager(context));
         binding.recyclerMessage.setNestedScrollingEnabled(true);
 
@@ -119,7 +123,7 @@ public class NotificationsFragment extends Fragment {
             binding.textView7.setVisibility(View.GONE);
             binding.recyclerMessage.setVisibility(View.VISIBLE);
 
-            fetchChats();
+            getPeople();
         }
         else {
             binding.btnRegister.setVisibility(View.VISIBLE);
@@ -242,31 +246,34 @@ public class NotificationsFragment extends Fragment {
             }
         });
     }
-
-    public void fetchChats(){
-        pDialog.setContentText("Fetching Chats");
+    public void getPeople(){
+        pDialog.setContentText("Fetching People");
         pDialog.show();
-        Call<List<ChatResponse>> call = ChatServiceGenerator.getInstance()
-                .getApiConnector().getChats(new PreferenceStorage(context).getUserToken());
-        call.enqueue(new Callback<List<ChatResponse>>() {
+
+        Call<List<PeopleResponse>> call = ChatServiceGenerator.getInstance()
+                .getApiConnector().getPeople(
+                        "Token " +new PreferenceStorage(context).getUserToken()
+                );
+        call.enqueue(new Callback<List<PeopleResponse>>() {
             @Override
-            public void onResponse(Call<List<ChatResponse>> call, Response<List<ChatResponse>> response) {
+            public void onResponse(Call<List<PeopleResponse>> call, Response<List<PeopleResponse>> response) {
                 pDialog.dismiss();
-                if (response.code() == 200){
-                    chats.clear();
-                    chats.addAll(response.body());
-                    chatAdapter.notifyDataSetChanged();
+
+                if (response.code() == 200 && response.body()!= null){
+                    people.clear();
+                    people.addAll(response.body());
+                    peopleAdapter.notifyDataSetChanged();
                 }
-                else {
-                    Snackbar.make(binding.getRoot(),"You have no chats", Snackbar.LENGTH_LONG).show();
+                else{
+                    Snackbar.make(binding.getRoot(), "You have no chats", Snackbar.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<ChatResponse>> call, Throwable t) {
+            public void onFailure(Call<List<PeopleResponse>> call, Throwable t) {
                 pDialog.dismiss();
-                Snackbar.make(binding.getRoot(), "Something went wrong", Snackbar.LENGTH_LONG).show();
-
+                Toast.makeText(context, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                Log.d("TEST::", "onFailure: "+t.getMessage());
             }
         });
     }
