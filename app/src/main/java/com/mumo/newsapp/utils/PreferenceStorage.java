@@ -16,6 +16,7 @@ public class PreferenceStorage {
     private final String USER_NUMBER = "com.mumo.newsapp.utils.USER_NUMBER";
     private final String SHARED_PREF_NAME = "com.mumo.newsapp.utils.SHARED_PREF_NAME";
     private final String IS_AUTHENTICATED = "com.mumo.newsapp.utils.IS_AUTHENTICATED";
+    private static final String USER_ID = "com.mumo.newsapp.utils.USER_ID";
 
     public PreferenceStorage(Context context) {
         this.sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
@@ -30,11 +31,18 @@ public class PreferenceStorage {
         editor.putString(USER_EMAIL, userResponse.getEmail());
         editor.putString(USER_NUMBER, userResponse.getPhoneNumber());
         editor.putString(USER_TOKEN, userResponse.getToken());
+        editor.putInt(USER_ID, userResponse.getId());
         editor.apply();
     }
 
     public String getUserToken(){
         return sharedPreferences.getString(USER_TOKEN, "");
+    }
+    public String getUserName(){
+        return sharedPreferences.getString(USER_NAME, "");
+    }
+    public int getUserId(){
+        return sharedPreferences.getInt(USER_ID, 0);
     }
 
     public boolean isAuthenticated(){

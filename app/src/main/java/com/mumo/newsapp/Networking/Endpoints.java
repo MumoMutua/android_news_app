@@ -1,6 +1,7 @@
 package com.mumo.newsapp.Networking;
 
 import com.mumo.newsapp.Networking.pojos.ChatResponse;
+import com.mumo.newsapp.Networking.pojos.MessageRequest;
 import com.mumo.newsapp.Networking.pojos.RegisterRequest;
 import com.mumo.newsapp.Networking.pojos.UserResponse;
 import com.mumo.newsapp.models.Browse;
@@ -42,4 +43,9 @@ public interface Endpoints {
     @Headers({"Accept: application/json"})
     @GET("api/people")
     Call<List<PeopleResponse>> getPeople(@Header("Authorization") String token);
+
+    @Headers({"Accept: application/json"})
+    @POST("api/send/message")
+    Call<List<ChatResponse>> sendMessage(@Body MessageRequest messageRequest, @Header("Authorization") String token);
+
 }
