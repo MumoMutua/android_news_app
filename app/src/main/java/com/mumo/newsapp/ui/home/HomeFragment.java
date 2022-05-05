@@ -1,22 +1,19 @@
 package com.mumo.newsapp.ui.home;
 
-import static android.content.ContentValues.TAG;
-
-import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavAction;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +28,7 @@ import com.mumo.newsapp.adapters.DiscoverAdapter;
 import com.mumo.newsapp.databinding.FragmentHomeBinding;
 import com.mumo.newsapp.models.Browse;
 import com.mumo.newsapp.models.Discover;
+import com.mumo.newsapp.utils.Notifications;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +39,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
+
+    NotificationManagerCompat notificationManagerCompat;
+    Notifications notifications;
 
     private FragmentHomeBinding binding;
     private DiscoverAdapter discoverAdapter;
@@ -95,6 +96,19 @@ public class HomeFragment extends Fragment {
         return root;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        super.onViewCreated(view, savedInstanceState);
+
+        notifications = new Notifications(getActivity());
+        notifications.createNotificationChannel();
+
+        notificationManagerCompat = NotificationManagerCompat.from(getActivity());
+        String title = "My Notification";
+        String text = "This is my first notification ever";
+        notificationManagerCompat.notify(243, notifications.registerNotification(title, text).build());
+
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
