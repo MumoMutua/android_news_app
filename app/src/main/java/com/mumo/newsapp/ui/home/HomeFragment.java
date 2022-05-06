@@ -2,6 +2,8 @@ package com.mumo.newsapp.ui.home;
 
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -107,8 +109,17 @@ public class HomeFragment extends Fragment {
         String title = "My Notification";
         String text = "This is my first notification ever";
         notificationManagerCompat.notify(243, notifications.registerNotification(title, text).build());
+        notificationManagerCompat.notify(254, notifications.bigTextNotification("Big Text Style", getActivity().getResources().getString(R.string.large_text)).build());
+
+        showImageNotification();
 
     }
+
+    private void showImageNotification() {
+        Bitmap bitmap = BitmapFactory.decodeResource(getActivity().getResources(), R.drawable.notification_1540708456);
+        notificationManagerCompat.notify(263, notifications.bigImageNotification("Screenshot Captured", bitmap).build());
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

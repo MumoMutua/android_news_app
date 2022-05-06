@@ -2,11 +2,15 @@ package com.mumo.newsapp.utils;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
+import com.mumo.newsapp.HomeActivity;
 import com.mumo.newsapp.R;
 
 public class Notifications {
@@ -51,10 +55,54 @@ public class Notifications {
     public NotificationCompat.Builder registerNotification (String title, String text){
         //This method will be used to build and add the necessary details
 
+        Intent intent = new Intent(context, HomeActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,PendingIntent.FLAG_IMMUTABLE);
+
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/*");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "Mumo is inviting you to join NewsApp");
+        shareIntent.putExtra(Intent.EXTRA_TITLE, "Join NewsApp");
+
+        PendingIntent sharePendingIntent = PendingIntent.getActivity(context, 0, shareIntent, PendingIntent.FLAG_IMMUTABLE);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_explore)
                 .setContentTitle(title)
                 .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .addAction(R.drawable.ic_baseline_share, "Share", sharePendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        return builder;
+    }
+
+    public NotificationCompat.Builder bigTextNotification(String title, String text) {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_explore)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        return builder;
+    }
+    public NotificationCompat.Builder bigImageNotification(String title, Bitmap image) {
+
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/*");
+        intent.putExtra(Intent.EXTRA_TEXT, "Random Text");
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_explore)
+                .setContentTitle(title)
+                .setLargeIcon(image)
+                .setStyle(new NotificationCompat.BigPictureStyle()
+                        .bigPicture(image)
+                        .bigLargeIcon(null))
+                .addAction(R.drawable.ic_baseline_share, "Share", pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         return builder;
