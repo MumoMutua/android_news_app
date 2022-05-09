@@ -1,5 +1,6 @@
 package com.mumo.newsapp.ui.notifications;
 
+import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,6 +29,7 @@ import com.mumo.newsapp.R;
 import com.mumo.newsapp.adapters.ChatAdapter;
 import com.mumo.newsapp.adapters.PeopleAdapter;
 import com.mumo.newsapp.databinding.FragmentNotificationsBinding;
+import com.mumo.newsapp.utils.Notifications;
 import com.mumo.newsapp.utils.PreferenceStorage;
 
 import java.util.ArrayList;
@@ -46,11 +49,22 @@ public class NotificationsFragment extends Fragment {
     private List<ChatResponse> chats = new ArrayList<>();
     private List<PeopleResponse> people = new ArrayList<>();
     private PeopleAdapter peopleAdapter;
+    private Notifications notifications;
+    private NotificationManagerCompat notificationManager;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = requireActivity();
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        notifications = new Notifications(context);
+        notificationManager = NotificationManagerCompat.from(getActivity());
+
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -225,6 +239,9 @@ public class NotificationsFragment extends Fragment {
                     successDialog.setTitle("Welcome " + response.body().getUsername());
                     successDialog.setContentText("Registration Successful");
                     successDialog.show();
+
+                    notificationManager.notify(254, notifications.registerNotification("Welcome", "Thank you for using NewsApp."+
+                            "You can share it with your friends and stay up to date together").build());
                 }
                 else if (response.code() == 500){
                     SweetAlertDialog errorDialog = new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE);
