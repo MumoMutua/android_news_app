@@ -25,10 +25,12 @@ import com.mumo.newsapp.Networking.PeopleResponse;
 import com.mumo.newsapp.Networking.pojos.ChatResponse;
 import com.mumo.newsapp.Networking.pojos.RegisterRequest;
 import com.mumo.newsapp.Networking.pojos.UserResponse;
+import com.mumo.newsapp.ObjectBox;
 import com.mumo.newsapp.R;
 import com.mumo.newsapp.adapters.ChatAdapter;
 import com.mumo.newsapp.adapters.PeopleAdapter;
 import com.mumo.newsapp.databinding.FragmentNotificationsBinding;
+import com.mumo.newsapp.models.People;
 import com.mumo.newsapp.utils.Notifications;
 import com.mumo.newsapp.utils.PreferenceStorage;
 
@@ -36,6 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.objectbox.Box;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,11 +54,13 @@ public class NotificationsFragment extends Fragment {
     private PeopleAdapter peopleAdapter;
     private Notifications notifications;
     private NotificationManagerCompat notificationManager;
+    private Box<People> peopleBox = ObjectBox.get().boxFor(People.class);
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        context = getActivity();
     }
 
     @Override
@@ -137,7 +142,22 @@ public class NotificationsFragment extends Fragment {
             binding.textView7.setVisibility(View.GONE);
             binding.recyclerMessage.setVisibility(View.VISIBLE);
 
-            getPeople();
+            if (peopleBox.isEmpty()){
+                getPeople();
+            }
+           else {
+               people.clear();
+               List<People> boxPeople = peopleBox.getAll();
+               for (int i=0; i< boxPeople.size(); i++){
+                   people.add(
+                           new PeopleResponse(
+                                   boxPeople.get(i).getUser_id(),
+                                   boxPeople.get(i).getUsername(),
+                                   boxPeople.get(i).getEmail()
+                           )
+                   );
+               }
+            }
         }
         else {
             binding.btnRegister.setVisibility(View.VISIBLE);
@@ -280,6 +300,14 @@ public class NotificationsFragment extends Fragment {
                     people.clear();
                     people.addAll(response.body());
                     peopleAdapter.notifyDataSetChanged();
+
+                    for (int i=0; i<people.size(); i++){
+                        peopleBox.put(new People(
+                                people.get(i).getUser_id(),
+                                people.get(i).getUsername(),
+                                people.get(i).getEmail()
+                        ));
+                    }
                 }
                 else{
                     Snackbar.make(binding.getRoot(), "You have no chats", Snackbar.LENGTH_LONG).show();

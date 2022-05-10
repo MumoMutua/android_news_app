@@ -36,9 +36,92 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "2:8891640799616692871",
+      "lastPropertyId": "9:3243711729787218478",
+      "name": "Chat",
+      "properties": [
+        {
+          "id": "1:4392269211942434804",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2526489980207976529",
+          "name": "user_id",
+          "type": 5
+        },
+        {
+          "id": "3:3885445859525648512",
+          "name": "userFrom",
+          "type": 5
+        },
+        {
+          "id": "4:6072259920095869275",
+          "name": "userFromName",
+          "type": 9
+        },
+        {
+          "id": "5:5942727755234352879",
+          "name": "userTo",
+          "type": 5
+        },
+        {
+          "id": "6:2431489283155509403",
+          "name": "userToName",
+          "type": 9
+        },
+        {
+          "id": "7:1774739342094403701",
+          "name": "message",
+          "type": 9
+        },
+        {
+          "id": "8:882115718773675084",
+          "name": "dateCreated",
+          "type": 9
+        },
+        {
+          "id": "9:3243711729787218478",
+          "name": "status",
+          "type": 5
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:3692122187926377411",
+      "lastPropertyId": "4:146199633401336576",
+      "name": "People",
+      "properties": [
+        {
+          "id": "1:6372458223356059844",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5777840020579572786",
+          "name": "user_id",
+          "type": 5
+        },
+        {
+          "id": "3:6766799337882665323",
+          "name": "username",
+          "type": 9
+        },
+        {
+          "id": "4:146199633401336576",
+          "name": "email",
+          "type": 9
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "1:6228922707386511950",
+  "lastEntityId": "3:3692122187926377411",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

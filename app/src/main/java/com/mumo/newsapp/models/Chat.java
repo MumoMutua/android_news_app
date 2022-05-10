@@ -1,32 +1,26 @@
-package com.mumo.newsapp.Networking.pojos;
+package com.mumo.newsapp.models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
+import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
-public class ChatResponse {
+@Entity
+public class Chat {
 
-    @SerializedName("id")
-    @Expose
+    public Chat() {
+    }
+
+    @Id
+    long id;
+
     private Integer user_id;
-    @SerializedName("user_from")
-    @Expose
     private Integer userFrom;
-    @SerializedName("user_from_name")
-    @Expose
     private String userFromName;
-    @SerializedName("user_to")
-    @Expose
     private Integer userTo;
-    @SerializedName("user_to_name")
-    @Expose
+
     private String userToName;
-    @SerializedName("message")
-    @Expose
+
     private String message;
-    @SerializedName("date_created")
-    @Expose
+
     private String dateCreated;
 
     /**
@@ -45,10 +39,21 @@ public class ChatResponse {
         this.status = status;
     }
 
-    public Integer getUser_Id() {
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Integer getUser_id() {
         return user_id;
     }
 
+    public void setUser_id(Integer user_id) {
+        this.user_id = user_id;
+    }
 
     public Integer getUserFrom() {
         return userFrom;
@@ -98,6 +103,4 @@ public class ChatResponse {
         this.dateCreated = dateCreated;
     }
 
-    public ChatResponse() {
-    }
 }

@@ -1,31 +1,26 @@
-package com.mumo.newsapp.Networking;
+package com.mumo.newsapp.models;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
+import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
-public class PeopleResponse {
+@Entity
+public class People {
+    @Id
+    long id;
+    private Integer user_id;
+    private String username;
+    private String email;
 
-    public PeopleResponse() {
+    public People() {
+
     }
 
-    public PeopleResponse(Integer user_id, String username, String email) {
+    public People(Integer user_id, String username, String email) {
         this.user_id = user_id;
         this.username = username;
         this.email = email;
     }
 
-
-    @SerializedName("id")
-    @Expose
-    private Integer user_id;
-    @SerializedName("username")
-    @Expose
-    private String username;
-    @SerializedName("email")
-    @Expose
-    private String email;
 
     public Integer getUser_id() {
         return user_id;
@@ -33,6 +28,10 @@ public class PeopleResponse {
 
     public void setUser_id(Integer user_id) {
         this.user_id = user_id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUsername() {

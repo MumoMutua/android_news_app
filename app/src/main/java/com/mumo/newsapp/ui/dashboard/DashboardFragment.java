@@ -67,8 +67,7 @@ public class DashboardFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        mediaPlayer.release();
-        mediaPlayer = null;
+
         binding = null;
     }
 }

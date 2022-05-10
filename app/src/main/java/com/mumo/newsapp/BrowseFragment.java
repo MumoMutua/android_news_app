@@ -81,7 +81,7 @@ public class BrowseFragment extends Fragment {
         progressDialog.setCancelable(false);
        // progressDialog.show();
 
-        // getBrowseData("Technology", toDate(), "relevance");
+        getBrowseData("Technology", toDate(), "relevance");
 
         binding.inputSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -200,11 +200,11 @@ public class BrowseFragment extends Fragment {
     @Override
     public void onResume() {
 
-        homeViewModel.getNews().observe(requireActivity(), news ->{
-            articles.clear();
-            articles.addAll(news);
-            browseAdapter.notifyDataSetChanged();
-        });
+    //    homeViewModel.getNews().observe(requireActivity(), news ->{
+     //       articles.clear();
+       //     articles.addAll(news);
+         //   browseAdapter.notifyDataSetChanged();
+        //});
 
         super.onResume();
     }
