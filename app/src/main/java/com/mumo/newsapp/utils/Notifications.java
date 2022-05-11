@@ -16,6 +16,7 @@ import com.mumo.newsapp.R;
 public class Notifications {
 
     public static final String CHANNEL_ID = "com.mumo.newsapp.register_notification";
+    public static final String CHAT_SYNC_NOTIFICATION_ID = "com.mumo.newsapp.chat_sync_notification";
     private Context context;
 
     /**
@@ -47,6 +48,33 @@ public class Notifications {
             manager.createNotificationChannel(channel);
         }
     }
+
+    public void createSyncNotificationChannel(String name, String description, String channel_id){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+
+            /*
+             This will only apply to Android 8 (API 26) and above
+             Android 7 and below registers notifications in a different way
+             */
+
+//            CharSequence name = "NewsApp Notifications";
+//            String description = "Registration notification from newsapp";
+
+            /*
+            This Variable will let the android system know how to display the notification
+            Notifications with higher importance will be able to interrupt user activity
+            Those with less importance will be displayed silently
+             */
+
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager manager = context.getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }
+
 
     public Notifications(Context context) {
         this.context = context;
@@ -105,6 +133,19 @@ public class Notifications {
                 .addAction(R.drawable.ic_baseline_share, "Share", pendingIntent)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
+        return builder;
+    }
+    public NotificationCompat.Builder chatSyncNotification(){
+        String title = "Messages";
+        String text = "Checking Messages";
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(
+                context, CHAT_SYNC_NOTIFICATION_ID)
+                .setSmallIcon(R.drawable.ic_baseline_explore)
+                .setContentTitle(title)
+                .setContentText(text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(text))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
         return builder;
     }
 }

@@ -1,5 +1,6 @@
 package com.mumo.newsapp;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,12 +18,16 @@ import com.mumo.newsapp.Networking.pojos.ChatResponse;
 import com.mumo.newsapp.Networking.pojos.MessageRequest;
 import com.mumo.newsapp.adapters.ChatMessageAdapter;
 import com.mumo.newsapp.databinding.FragmentChatDetailsBinding;
+import com.mumo.newsapp.models.Chat;
+import com.mumo.newsapp.models.Chat_;
 import com.mumo.newsapp.utils.PreferenceStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
+import io.objectbox.Box;
+import io.objectbox.query.Query;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,6 +40,7 @@ public class ChatDetailsFragment extends Fragment {
     private List<ChatResponse> chats = new ArrayList<>();
     private int their_id = 0;
     private ChatMessageAdapter chatMessageAdapter;
+    private Box<Chat> chatBox = ObjectBox.get().boxFor(Chat.class);
 
     public ChatDetailsFragment() {
         // Required empty public constructor
@@ -75,7 +81,9 @@ public class ChatDetailsFragment extends Fragment {
         binding.chatMessageRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         binding.chatMessageRecyclerView.setAdapter(chatMessageAdapter);
         binding.chatMessageRecyclerView.setNestedScrollingEnabled(true);
-        fetchChats();
+
+        getChatsFromObjectBox();
+//        fetchChats();
 
         binding.fabSend.setOnClickListener(v -> {
             if(binding.inputMessage.getText().toString().trim().isEmpty()){
@@ -123,6 +131,28 @@ public class ChatDetailsFragment extends Fragment {
                 Log.d("TEST::", "onFailure: " +t.getMessage());
             }
         });
+    }
+
+    public void getChatsFromObjectBox(){
+        Query<Chat> query = chatBox.query(Chat_.userFrom.equal(their_id).or(Chat_.userTo.equal(their_id))).order(Chat_.dateCreated).build();
+        List<Chat> boxChats = query.find();
+
+        chats.clear();
+        for (int i=0; i<boxChats.size();i++){
+            chats.add(
+                    new ChatResponse(
+                           boxChats.get(i).getUser_id(),
+                           boxChats.get(i).getUserFrom(),
+                           boxChats.get(i).getUserFromName(),
+                           boxChats.get(i).getUserTo(),
+                           boxChats.get(i).getUserToName(),
+                           boxChats.get(i).getMessage(),
+                           boxChats.get(i).getDateCreated(),
+                           boxChats.get(i).getStatus()
+                    )
+            );
+        }
+        chatMessageAdapter.notifyDataSetChanged();
     }
 
     public void fetchChats(){

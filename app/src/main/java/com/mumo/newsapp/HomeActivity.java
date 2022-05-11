@@ -1,6 +1,7 @@
 package com.mumo.newsapp;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,8 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mumo.newsapp.databinding.ActivityHomeBinding;
+import com.mumo.newsapp.utils.MyServices;
+import com.mumo.newsapp.utils.Notifications;
 import com.mumo.newsapp.utils.PreferenceStorage;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +64,10 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        new Notifications(getApplicationContext()).createSyncNotificationChannel("Sync Chats", "Syncing Chats",
+                Notifications.CHAT_SYNC_NOTIFICATION_ID);
+//       Intent intent = new Intent(this, MyServices.class);
+//        startService(intent);
     }
 
     @Override

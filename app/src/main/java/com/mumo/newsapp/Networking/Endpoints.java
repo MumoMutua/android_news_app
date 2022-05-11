@@ -41,6 +41,10 @@ public interface Endpoints {
     Call<List<ChatResponse>> getChats(@Path("id") int id, @Header("Authorization") String token);
 
     @Headers({"Accept: application/json"})
+    @GET("api/sync/chats/{number}")
+    Call<List<ChatResponse>> syncChats(@Header("Authorization") String token, @Path("number") int number);
+
+    @Headers({"Accept: application/json"})
     @GET("api/people")
     Call<List<PeopleResponse>> getPeople(@Header("Authorization") String token);
 

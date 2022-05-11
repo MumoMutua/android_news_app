@@ -2,6 +2,7 @@ package com.mumo.newsapp.ui.home;
 
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.mumo.newsapp.adapters.DiscoverAdapter;
 import com.mumo.newsapp.databinding.FragmentHomeBinding;
 import com.mumo.newsapp.models.Browse;
 import com.mumo.newsapp.models.Discover;
+import com.mumo.newsapp.utils.MyServices;
 import com.mumo.newsapp.utils.Notifications;
 
 import java.util.ArrayList;
@@ -102,16 +104,19 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
         super.onViewCreated(view, savedInstanceState);
 
-        notifications = new Notifications(getActivity());
-        notifications.createNotificationChannel();
+//        notifications = new Notifications(getActivity());
+//        notifications.createNotificationChannel();
 
-        notificationManagerCompat = NotificationManagerCompat.from(getActivity());
-        String title = "My Notification";
-        String text = "This is my first notification ever";
-        notificationManagerCompat.notify(243, notifications.registerNotification(title, text).build());
-        notificationManagerCompat.notify(254, notifications.bigTextNotification("Big Text Style", getActivity().getResources().getString(R.string.large_text)).build());
+//        notificationManagerCompat = NotificationManagerCompat.from(getActivity());
+//        String title = "My Notification";
+//        String text = "This is my first notification ever";
+//        notificationManagerCompat.notify(243, notifications.registerNotification(title, text).build());
+//        notificationManagerCompat.notify(254, notifications.bigTextNotification("Big Text Style", getActivity().getResources().getString(R.string.large_text)).build());
 
-        showImageNotification();
+//        showImageNotification();
+
+        Intent intent = new Intent(getActivity(), MyServices.class);
+        getActivity().startService(intent);
 
     }
 
