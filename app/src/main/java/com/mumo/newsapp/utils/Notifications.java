@@ -137,7 +137,7 @@ public class Notifications {
     }
     public NotificationCompat.Builder chatSyncNotification(){
         String title = "Messages";
-        String text = "Checking Messages";
+        String text = "Checking Messages...";
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 context, CHAT_SYNC_NOTIFICATION_ID)

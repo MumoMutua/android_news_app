@@ -2,6 +2,7 @@ package com.mumo.newsapp;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +21,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mumo.newsapp.databinding.ActivityHomeBinding;
 import com.mumo.newsapp.utils.MyServices;
+import com.mumo.newsapp.utils.NetworkReceiver;
 import com.mumo.newsapp.utils.Notifications;
 import com.mumo.newsapp.utils.PreferenceStorage;
 
@@ -68,6 +70,10 @@ public class HomeActivity extends AppCompatActivity {
                 Notifications.CHAT_SYNC_NOTIFICATION_ID);
 //       Intent intent = new Intent(this, MyServices.class);
 //        startService(intent);
+
+        IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
+        filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");
+        registerReceiver(new NetworkReceiver(), filter);
     }
 
     @Override
@@ -102,8 +108,6 @@ public class HomeActivity extends AppCompatActivity {
 
             });
             sweetAlertDialog.show();
-
-            //TODO: Add an alert  dialog that asks the user whether they want to logout
 
         }
         return super.onOptionsItemSelected(item);

@@ -95,7 +95,7 @@ public class MyServices extends Service {
                else {
                    Log.d("TESTS::", "onResponse: "+response.message()+response.code());
                }
-               notificationManager.cancel(CHAT_SYNC_NOTIFICATION_ID);
+//               notificationManager.cancel(CHAT_SYNC_NOTIFICATION_ID);
             }
 
             @Override
