@@ -1,14 +1,12 @@
 package com.mumo.newsapp;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -18,9 +16,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mumo.newsapp.databinding.ActivityHomeBinding;
-import com.mumo.newsapp.utils.MyServices;
 import com.mumo.newsapp.utils.NetworkReceiver;
 import com.mumo.newsapp.utils.Notifications;
 import com.mumo.newsapp.utils.PreferenceStorage;
@@ -33,7 +29,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private ActivityHomeBinding binding;
     private  NavController navController;
     AppBarConfiguration appBarConfiguration;
 
@@ -41,8 +36,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
-        binding = ActivityHomeBinding.inflate(getLayoutInflater());
+        ActivityHomeBinding binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         //Display today's date on the text View
@@ -50,13 +44,11 @@ public class HomeActivity extends AppCompatActivity {
         TextView dateText = findViewById(R.id.textDate);
 
         Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("MMM dd yyyy");
         String date = formatter.format(today);
 
         dateText.setText(date);
 
-
-        BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = new AppBarConfiguration.Builder(
@@ -68,8 +60,7 @@ public class HomeActivity extends AppCompatActivity {
 
         new Notifications(getApplicationContext()).createSyncNotificationChannel("Sync Chats", "Syncing Chats",
                 Notifications.CHAT_SYNC_NOTIFICATION_ID);
-//       Intent intent = new Intent(this, MyServices.class);
-//        startService(intent);
+
 
         IntentFilter filter = new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE");
         filter.addAction("android.net.wifi.WIFI_STATE_CHANGED");

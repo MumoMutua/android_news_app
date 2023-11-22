@@ -25,7 +25,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MyServices extends Service {
-
     MediaPlayer mediaPlayer;
     private Box<Chat> chatBox = ObjectBox.get().boxFor(Chat.class);
     private NotificationManager notificationManager;
@@ -34,7 +33,6 @@ public class MyServices extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-
         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 

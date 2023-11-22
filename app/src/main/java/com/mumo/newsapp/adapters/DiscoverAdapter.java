@@ -48,7 +48,6 @@ public class DiscoverAdapter extends RecyclerView.Adapter<DiscoverAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
         Glide.with(context).load(discoverList.get(position).getImage()).into(holder.imgDiscover);
     }
 

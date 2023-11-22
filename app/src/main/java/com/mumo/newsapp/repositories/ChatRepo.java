@@ -1,16 +1,5 @@
 package com.mumo.newsapp.repositories;
 
-import android.util.Log;
-
-import com.mumo.newsapp.Networking.ServiceGenerator;
-import com.mumo.newsapp.Networking.pojos.ChatResponse;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class ChatRepo {
 //    public void syncChats(String token){
 //        Call<List<ChatResponse>> call = ServiceGenerator.getInstance()

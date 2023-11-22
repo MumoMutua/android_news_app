@@ -20,7 +20,6 @@ import com.mumo.newsapp.R;
 import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
-
     private List<ChatResponse> chats;
     private Context context;
 

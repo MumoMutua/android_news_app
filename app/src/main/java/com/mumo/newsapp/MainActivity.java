@@ -9,9 +9,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 
 public class MainActivity extends AppCompatActivity {
-
     Handler delayHandler = new Handler();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +22,5 @@ public class MainActivity extends AppCompatActivity {
            startActivity(new Intent(MainActivity.this, HomeActivity.class));
            finish();
         }, 2000);
-
     }
 }

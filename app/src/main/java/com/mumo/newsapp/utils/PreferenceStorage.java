@@ -6,10 +6,8 @@ import android.content.SharedPreferences;
 import com.mumo.newsapp.Networking.pojos.UserResponse;
 
 public class PreferenceStorage {
-
     SharedPreferences sharedPreferences;
     private Context context;
-
     private final String USER_NAME = "com.mumo.newsapp.utils.USER_NAME";
     private final String USER_EMAIL = "com.mumo.newsapp.utils.USER_EMAIL";
     private final String USER_TOKEN = "com.mumo.newsapp.utils.USER_TOKEN";
@@ -53,7 +51,6 @@ public class PreferenceStorage {
         editor.putBoolean(IS_AUTHENTICATED, status);
         editor.apply();
     }
-
     public void logout() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_AUTHENTICATED, false);

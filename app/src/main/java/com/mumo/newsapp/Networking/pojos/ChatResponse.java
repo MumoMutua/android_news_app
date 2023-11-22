@@ -37,7 +37,16 @@ public class ChatResponse {
      */
     private int status = 0;
 
-    public ChatResponse(Integer user_id, Integer userFrom, String userFromName, Integer userTo, String userToName, String message, String dateCreated, int status) {
+    public ChatResponse(
+            Integer user_id,
+            Integer userFrom,
+            String userFromName,
+            Integer userTo,
+            String userToName,
+            String message,
+            String dateCreated,
+            int status) {
+
         this.user_id = user_id;
         this.userFrom = userFrom;
         this.userFromName = userFromName;

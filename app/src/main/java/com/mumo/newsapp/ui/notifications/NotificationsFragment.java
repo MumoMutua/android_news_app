@@ -1,6 +1,5 @@
 package com.mumo.newsapp.ui.notifications;
 
-import android.app.Notification;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;

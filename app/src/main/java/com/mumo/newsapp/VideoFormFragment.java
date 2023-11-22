@@ -100,14 +100,12 @@ public class VideoFormFragment extends Fragment {
         }
 
     }
-
     private void fillImageData(Intent data) {
 
         image_url = data.getData().toString();
         binding.imgAddDiscover.setImageURI(data.getData());
 
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,11 +114,7 @@ public class VideoFormFragment extends Fragment {
         binding = FragmentVideoFormBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        binding.btnAddDiscover.setOnClickListener(v ->{
-
-            validateInputs();
-
-        });
+        binding.btnAddDiscover.setOnClickListener(v -> validateInputs());
         binding.imgAddDiscover.setOnClickListener(v->{
 
             // Go to file explorer and select image
@@ -135,7 +129,6 @@ public class VideoFormFragment extends Fragment {
 
         return root;
     }
-
     private void validateInputs() {
 
         String video_url = binding.inputVideoUrl.getText().toString().trim();
@@ -163,14 +156,12 @@ public class VideoFormFragment extends Fragment {
         }
 
     }
-
-
     public void verifyPermissions(){
-        String [] permissions={
-                Manifest.permission.READ_EXTERNAL_STORAGE
-        };
 
-        if(ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),permissions[0]) == PackageManager.PERMISSION_GRANTED)
+        String [] permissions={ Manifest.permission.READ_EXTERNAL_STORAGE };
+
+        if(ContextCompat.checkSelfPermission(getActivity()
+                .getApplicationContext(),permissions[0]) == PackageManager.PERMISSION_GRANTED)
         {
             Toast.makeText(getActivity(),"Permission Granted", Toast.LENGTH_SHORT).show();
         }

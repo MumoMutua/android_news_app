@@ -6,10 +6,12 @@ import io.objectbox.annotation.Id;
 @Entity
 public class Discover{
     @Id
-            long id; //This long is a a requirement for all object box models. Serves as the primary (unique) key.
+    long id; //This long is a a requirement for all object box models. Serves as the primary (unique) key.
     String image;
     String video_url;
     boolean is_external_image;
+
+    public Discover() {}
 
     public long getId() {
         return id;
@@ -41,9 +43,6 @@ public class Discover{
 
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
-    }
-
-    public Discover() {
     }
 
     String created_at;
